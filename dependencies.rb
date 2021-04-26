@@ -1,0 +1,6 @@
+require './lib/utils.rb'
+require './app/cfg.rb'
+require './app/api.rb'
+require './app/handler.rb'
+require './app/formats.rb'
+require './app/notify.rb'
