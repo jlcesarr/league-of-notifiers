@@ -1,14 +1,14 @@
  
-class Ticker        
+class Adviser        
     include Observable
   
     def run
       last_data = nil
-      API.wait_for_connection() # Testa/espera conexao com a API
+      API.wait_for_connection() # Test/wait connection with API
       loop do
         data = API.fetch_events()
         if data != last_data
-          changed                # Notificar aos observadores uma modificacao na resposta da API
+          changed                # Notify watchers (Watcher Class) of a change in the API response
           last_data = data
           notify_observers(Time.now, data)
         end
@@ -19,14 +19,14 @@ class Ticker
 
   
 class Watcher 
-    def initialize(ticker, event_type)
+    def initialize(adviser, event_type)
       @notify = Notify::Discord.new()
       @event_type = event_type
       ticker.add_observer(self)
     end
   end
   
-  class WarnKill < Watcher
+  class WatchKill < Watcher
     def update(time, data)       # callback for observer
       if data["EventName"] == @event_type
           print "--- #{time.to_s}: #{data["KillerName"]} Killed Champion: #{data["VictimName"] || data["EventName"]}\n"
@@ -35,7 +35,7 @@ class Watcher
     end
   end
   
-  class WarnMonster < Watcher
+  class WatchMonster < Watcher
     def update(time, data)       # callback for observer
       if data["EventName"] == @event_type
           print "+++ #{time.to_s}: #{data["KillerName"]} Killed Epic Monster: #{@event_type}\n"
@@ -44,7 +44,7 @@ class Watcher
     end
   end
   
-  class WarnTurret < Watcher
+  class WatchTurret < Watcher
       def update(time, data)       # callback for observer
         if data["EventName"] == @event_type
             print "+++ #{time.to_s}: Turret Destroyed by: #{data["KillerName"]}\n"

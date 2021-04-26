@@ -18,24 +18,24 @@ class API
     end
   
     def self.fetch_gamedata()
-      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:allgamedata]}", {}, false)) # RETORNA TODO O OBJETO DA PARTIDA
+      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:allgamedata]}", {}, false)) # RETURNS THE OBJECT OF THE MATCH
     end
   
     def self.fetch_events()
-      events = JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:eventdata]}", {}, false))["Events"] # RETORNA TODOS OS EVENTOS DA PARTIDA
+      events = JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:eventdata]}", {}, false))["Events"] # RETURNS ALL MATCH EVENTS
       return if events.nil? 
       events.last
     end
   
     def self.fetch_players()
-      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:playerlist]}", {}, false)) # RETORNA TODOS OS PLAYERS
+      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:playerlist]}", {}, false)) # RETURNS ALL PLAYERS OBJ
     end
   
     def self.fetch_playerscore summoner_name
-      JSON.parse(Utils.req("GET", Addressable::URI.parse("#{$cfg[:uri]}/#{$cfg[:endpoints][:playerscore]}?summonerName=#{summoner_name}").normalize, {}, false)) # RETORNA OS SCORES DO PLAYER ATRAVES DO NOME DO INVOCADOR
+      JSON.parse(Utils.req("GET", Addressable::URI.parse("#{$cfg[:uri]}/#{$cfg[:endpoints][:playerscore]}?summonerName=#{summoner_name}").normalize, {}, false)) # RETURNS PLAYER SCORES THROUGH THE NAME OF THE SUMMONER
     end
 
     def self.get_champion_name_by_summoner summoner_name
-        fetch_players().each { |player| return player["championName"] if player["summonerName"].eql? summoner_name } # RETORNA O NOME DO CAMPEAO ATRAVES DO NOME DO INVOCADOR
+        fetch_players().each { |player| return player["championName"] if player["summonerName"].eql? summoner_name } # RETURNS THE NAME OF THE CHAMPION THROUGH THE NAME OF THE SUMMONER
     end
 end
