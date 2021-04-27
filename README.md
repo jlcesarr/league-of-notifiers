@@ -7,7 +7,7 @@ League of Notifiers is a script that uses the [Observer](https://github.com/ruby
 
 
 ### Game Events that can be handled and emits notifications
- - `GameStart`: When the match starts (Coming soon)
+ - `GameStart`: When the match starts
  - `ChampionKill`: When a summoner kills another
  - `TurretKilled`: When a summoner destroyed a turret
  - `DragonKill`: When a summoner kills a dragon
