@@ -5,10 +5,12 @@ $cfg = {
         activeplayer: "liveclientdata/activeplayer",
         playerlist: "liveclientdata/playerlist",
         eventdata: "liveclientdata/eventdata",
-        playerscore: "liveclientdata/playerscores"
+        playerscore: "liveclientdata/playerscores",
+        gamestats: "liveclientdata/gamestats"
     },
 
     webhook: 'https://discord.com/api/webhooks/835279570478956555/ugMhbxSC2la4mSn7HP4C8BWdTnebzMkQodt6Pl_1oqBEqvOJ7oHwWxE1stuj6A52DKUG',
+    announce_match_starts: true,
     announce_kill: true,
     announce_turret_destroyed: true,
     announce_monster_kill: true,

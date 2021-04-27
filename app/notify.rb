@@ -1,7 +1,7 @@
 module Notify
     class Discord 
         def initialize
-            return if $cfg[:webhook].nil? || $cfg[:webhook] = ""        
+            return if $cfg[:webhook].nil? || $cfg[:webhook] == ""        
         end
         
         def send_message message
@@ -12,21 +12,37 @@ module Notify
             player_score = API.fetch_playerscore(event["KillerName"])
             killer_champion_name = API.get_champion_name_by_summoner(event["KillerName"])
 
-            send_message( 
-                format_kill_message(
-                    :killerName => event["KillerName"], 
-                    :victimName => event["VictimName"], 
-                    :killerChampion => killer_champion_name, 
-                    :victimChampion => API.get_champion_name_by_summoner(event["VictimName"]), 
-                    :assistsCount => event["Assisters"].nil? ? 0 : event["Assisters"].count, 
-                    :farmScore =>  player_score["creepScore"],
-                    :killScore =>  player_score["kills"],
-                    :deathScore =>  player_score["deaths"],
-                    :assistScore =>  player_score["assists"],
-                    :wardsScore =>  player_score["wardScore"].nil? ? 0 : player_score["wardScore"].round(),
-                    :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
+            if event["EventName"] == "Multikill"
+                send_message( 
+                    format_multikill_message(
+                        :killerName => event["KillerName"], 
+                        :streakCount => event["KillStreak"], 
+                        :killerChampion => killer_champion_name, 
+                        :farmScore =>  player_score["creepScore"],
+                        :killScore =>  player_score["kills"],
+                        :deathScore =>  player_score["deaths"],
+                        :assistScore =>  player_score["assists"],
+                        :wardsScore =>  player_score["wardScore"].nil? ? 0 : player_score["wardScore"].round(),
+                        :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
+                    )
                 )
-            )
+            elsif event["EventName"] == "ChampionKill"
+                send_message( 
+                    format_kill_message(
+                        :killerName => event["KillerName"], 
+                        :victimName => event["VictimName"], 
+                        :killerChampion => killer_champion_name, 
+                        :victimChampion => API.get_champion_name_by_summoner(event["VictimName"]), 
+                        :assistsCount => event["Assisters"].nil? ? 0 : event["Assisters"].count, 
+                        :farmScore =>  player_score["creepScore"],
+                        :killScore =>  player_score["kills"],
+                        :deathScore =>  player_score["deaths"],
+                        :assistScore =>  player_score["assists"],
+                        :wardsScore =>  player_score["wardScore"].nil? ? 0 : player_score["wardScore"].round(),
+                        :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
+                    )
+                )
+            end
         end   
         
         def alert_monster_kill event
@@ -75,5 +91,18 @@ module Notify
                 )
             )
         end   
+
+        def alert_match_starts event
+            match_data =  API.fetch_matchstats()
+            activeplayer = API.fetch_activeplayer()
+
+            send_message( 
+                format_match_starts_message(
+                    :summonerName => activeplayer["summonerName"],
+                    :matchQueue => match_data["gameMode"],
+                    :teamColor => API.get_team_name_by_summoner(activeplayer["summonerName"])
+                )
+            )
+        end     
     end
 end

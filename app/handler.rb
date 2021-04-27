@@ -2,8 +2,8 @@
     include Observable
   
     def run
-      last_data = nil
-      API.wait_for_connection() # Test/wait connection with API
+      API.wait_for_connection() # Test/wait connection with API before anything
+      last_data = nil      
       loop do
         data = API.fetch_events()
         if data != last_data
@@ -24,11 +24,20 @@ class Watcher
       adviser.add_observer(self)
     end
   end
+
+  class WatchMatch < Watcher
+    def update(time, data)       # callback for observer
+      if data["EventName"] == @event_type
+          puts "+++ #{time.to_s}: Match Started #{@event_type}"
+          @notify.alert_match_starts(data)
+      end
+    end
+  end
   
   class WatchKill < Watcher
     def update(time, data)       # callback for observer
       if data["EventName"] == @event_type
-          print "--- #{time.to_s}: #{data["KillerName"]} Killed Champion: #{data["VictimName"] || data["EventName"]}\n"
+          puts "+++ #{time.to_s}: Kill Event #{@event_type}"
           @notify.alert_champion_kill(data)
       end
     end
@@ -37,7 +46,7 @@ class Watcher
   class WatchMonster < Watcher
     def update(time, data)       # callback for observer
       if data["EventName"] == @event_type
-          print "+++ #{time.to_s}: #{data["KillerName"]} Killed Epic Monster: #{@event_type}\n"
+          puts "+++ #{time.to_s}: Monster Kill Event #{@event_type}"
           @notify.alert_monster_kill(data)
       end
     end
@@ -46,7 +55,7 @@ class Watcher
   class WatchTurret < Watcher
       def update(time, data)       # callback for observer
         if data["EventName"] == @event_type
-            print "+++ #{time.to_s}: Turret Destroyed by: #{data["KillerName"]}\n"
+          puts "+++ #{time.to_s}: Turret Kill Event #{@event_type}"
             @notify.alert_turret_kill(data)
         end
       end

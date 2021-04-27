@@ -35,7 +35,31 @@ class API
       JSON.parse(Utils.req("GET", Addressable::URI.parse("#{$cfg[:uri]}/#{$cfg[:endpoints][:playerscore]}?summonerName=#{summoner_name}").normalize, {}, false)) # RETURNS PLAYER SCORES THROUGH THE NAME OF THE SUMMONER
     end
 
+    def self.fetch_matchstats()
+      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:gamestats]}", {}, false)) # RETURNS THE BASIC OBJECT OF THE MATCH
+    end
+
+    def self.fetch_activeplayer()
+      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:activeplayer]}", {}, false)) # RETURNS THE OBJECT OF THE ACTIVE PLAYER
+    end
+
+
     def self.get_champion_name_by_summoner summoner_name
         fetch_players().each { |player| return player["championName"] if player["summonerName"].eql? summoner_name } # RETURNS THE NAME OF THE CHAMPION THROUGH THE NAME OF THE SUMMONER
     end
+
+    def self.get_team_name_by_summoner summoner_name
+        fetch_players().each { |player|  
+          if player["summonerName"].eql?(summoner_name)
+            teamCode = player["team"]
+            if teamCode == "ORDER"
+              return "Blue"
+            elsif teamCode == "CHAOS"
+              return "Red"
+            end
+          end
+        } 
+    end
+    
+
 end

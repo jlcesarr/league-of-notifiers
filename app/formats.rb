@@ -31,7 +31,7 @@ module Notify
                       }
                     ],
                     "footer": {
-                      "text": "Match Event",
+                      "text": "League of Notifiers",
                       "icon_url": "https://icon-library.com/images/league-of-legends-icon/league-of-legends-icon-10.jpg"
                     },
                     "thumbnail": {
@@ -43,6 +43,34 @@ module Notify
             EOS
         end
 
+
+        def format_multikill_message event = {}
+          <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
+          {
+              "content": null,
+              "embeds": [
+                {
+                  "title": "Champion Kill",
+                  "description": "**#{event[:killerName]}**  *killed* **#{event[:streakCount]}** summoners in sequence",
+                  "color": 16711680,
+                  "fields": [
+                    {
+                      "name": "#{event[:killerName]} (#{event[:killerChampion]}) scores:",
+                      "value": "Farm: #{event[:farmScore]} | Kills: #{event[:killScore]} | Deaths: #{event[:deathScore]} | Assists: #{event[:assistScore]} | Wards: #{event[:wardsScore]}"
+                    }
+                  ],
+                  "footer": {
+                    "text": "League of Notifiers",
+                    "icon_url": "https://icon-library.com/images/league-of-legends-icon/league-of-legends-icon-10.jpg"
+                  },
+                  "thumbnail": {
+                      "url": "#{event[:championImage]}"
+                  }
+                }
+              ]
+            }
+          EOS
+        end
 
         def format_turret_message event = {}
             <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
@@ -71,7 +99,7 @@ module Notify
                     }
                   ],
                   "footer": {
-                    "text": "Match Event",
+                    "text": "League of Notifiers",
                     "icon_url": "https://icon-library.com/images/league-of-legends-icon/league-of-legends-icon-10.jpg"
                   },
                   "thumbnail": {
@@ -110,7 +138,7 @@ module Notify
                       }
                     ],
                     "footer": {
-                      "text": "Match Event",
+                      "text": "League of Notifiers",
                       "icon_url": "https://icon-library.com/images/league-of-legends-icon/league-of-legends-icon-10.jpg"
                     },
                     "thumbnail": {
@@ -120,6 +148,28 @@ module Notify
                 ]
               }
             EOS
+        end
+
+        def format_match_starts_message event = {}
+          <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
+          {
+            "content": null,
+            "embeds": [
+              {
+                "title": "Match Started",
+                "description": "**#{event[:summonerName]}** started a **#{event[:matchQueue]}** match and is playing for the **#{event[:teamColor]}** team",
+                "color": 255,
+                "footer": {
+                  "text": "League of Notifiers",
+                  "icon_url": "https://icon-library.com/images/league-of-legends-icon/league-of-legends-icon-10.jpg"
+                },
+                "image": {
+                  "url": "https://static.wikia.nocookie.net/leagueoflegends/images/1/1c/Pengu_Featherknight_profileicon.png"
+                }
+              }
+            ]
+          }
+          EOS
         end
     end
 end
