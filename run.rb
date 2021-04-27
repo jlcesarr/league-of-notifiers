@@ -2,6 +2,8 @@ Bundler.require
 
 require './load.rb'
 
+
+
 adviser = Adviser.new()
 WatchMatch.new(adviser, "GameStart") if $cfg[:announce_match_starts] ## CREATES AN OBSERVER TO NOTIFY WHEN A MATCH IS STARTED
 WatchKill.new(adviser, "ChampionKill") && WatchKill.new(adviser, "Multikill") if $cfg[:announce_kill] ## CREATES AN OBSERVER TO NOTIFY WHEN ONE CHAMPION ELIMINATES ANOTHER 

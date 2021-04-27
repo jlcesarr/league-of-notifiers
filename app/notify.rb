@@ -5,7 +5,7 @@ module Notify
         end
         
         def send_message message
-            Utils.req("POST", $cfg[:webhook], {"Content-Type": "application/json"}, message)                
+            Utils.req("POST", $cfg[:webhook], {"Content-Type": "application/json"}, '{ "content": null, "embeds": '+ message +' }')                
         end
         
         def alert_champion_kill event

@@ -2,9 +2,7 @@ module Notify
     class Discord
         def format_kill_message event = {}
             <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
-            {
-                "content": null,
-                "embeds": [
+                  [
                   {
                     "title": "Champion Kill",
                     "description": "**#{event[:killerName]}**  *killed* **#{event[:victimName]}** with **#{event[:assistsCount]}** assistances",
@@ -39,16 +37,13 @@ module Notify
                     }
                   }
                 ]
-              }
             EOS
         end
 
 
         def format_multikill_message event = {}
           <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
-          {
-              "content": null,
-              "embeds": [
+              [
                 {
                   "title": "Champion Kill",
                   "description": "**#{event[:killerName]}**  *killed* **#{event[:streakCount]}** summoners in sequence",
@@ -68,15 +63,12 @@ module Notify
                   }
                 }
               ]
-            }
           EOS
         end
 
         def format_turret_message event = {}
             <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
-            {
-              "content": null,
-              "embeds": [
+                [
                 {
                   "title": "Torret Destroyed",
                   "description": "**#{event[:killerName]}**  *destroyed the*  **#{event[:turretLane]}** of **#{event[:teamColor]}** Team",
@@ -107,15 +99,12 @@ module Notify
                   }
                 }
               ]
-            }
             EOS
         end
 
         def format_monster_message event = {}
             <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
-            {
-                "content": null,
-                "embeds": [
+              [
                   {
                     "title": "Epic Monster Kill",
                     "description": "**#{event[:killerName]}**  *#{['annihilated', 'exterminate', 'extinguish'].sample} the*  **#{event[:monsterName]}** with **#{event[:assistsCount]}** assistances",
@@ -146,15 +135,12 @@ module Notify
                     }
                   }
                 ]
-              }
             EOS
         end
 
         def format_match_starts_message event = {}
           <<-EOS.gsub(/^[\s\t]*|[\s\t]*\n/, '')
-          {
-            "content": null,
-            "embeds": [
+            [
               {
                 "title": "Match Started",
                 "description": "**#{event[:summonerName]}** started a **#{event[:matchQueue]}** match and is playing for the **#{event[:teamColor]}** team",
@@ -168,7 +154,6 @@ module Notify
                 }
               }
             ]
-          }
           EOS
         end
     end
