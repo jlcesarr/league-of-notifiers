@@ -13,6 +13,7 @@ League of Notifiers is a script that uses the [Observer](https://github.com/ruby
  - `BaronKill`: When a summoner kills the baron
 
 ### How to use:
-* 1- Run the script ``ruby run.rb``
-* 2- Start a match
-* 2- Have fun!
+* 1- Install gems ``bundle install``
+* 2- Run the script ``bundle exec ruby run.rb``
+* 3- Start a match
+* 4- Have fun!

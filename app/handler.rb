@@ -1,5 +1,4 @@
- 
-class Adviser        
+ class Adviser        
     include Observable
   
     def run
@@ -22,7 +21,7 @@ class Watcher
     def initialize(adviser, event_type)
       @notify = Notify::Discord.new()
       @event_type = event_type
-      ticker.add_observer(self)
+      adviser.add_observer(self)
     end
   end
   
