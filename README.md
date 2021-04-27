@@ -7,10 +7,12 @@ League of Notifiers is a script that uses the [Observer](https://github.com/ruby
 
 
 ### Game Events that can be handled
+ - `GameStart`: When the match starts (Coming soon)
  - `ChampionKill`: When a summoner kills another
  - `TurretKilled`: When a summoner destroyed a turret
  - `DragonKill`: When a summoner kills a dragon
- - `BaronKill`: When a summoner kills the baron
+ - `BaronKill`: When a summoner kills the Baron
+ - `HeraldKill`: When a summoner kills the Herald (Coming soon)
 
 ### How to use:
 * 1- Install gems ``bundle install``
