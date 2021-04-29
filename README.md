@@ -18,7 +18,7 @@ League of Notifiers is a script that uses the [Observer](https://github.com/ruby
 - `FirstBlood`: When a summoner gets the first blood
 - `FirstBrick`: When a summoner gets the first brick
 
-### Event observers that can be created/triggered
+### Event Observers that can be created/triggered
 
 - `WatchMatch.new(adviser, "GameStart")`: Notified when the match starts
 - `WatchMatch.new(adviser, "ChampionKill")`: Notified when a summoner kills another
