@@ -1,20 +1,24 @@
 require "addressable/uri"
-class API     
-    def self.wait_for_connection()
-        while true
-            begin
-                Utils.req("GET", $cfg[:uri], {}, false)
-            rescue Errno::ECONNREFUSED => ex
-                puts 'Waiting for the match to start!'
-            else
-                system("cls")
-                puts "Connection estabilished!"
-                return false
-            ensure
-                sleep 1
-                # system("cls")
-            end
-        end   
+class API
+    attr_accessor :has_match_started
+
+    def initialize
+      @has_match_started = nil
+    end
+
+    def self.wait_for_connection()          
+          return if !!@has_match_started
+
+          connect = Utils.req("GET", $cfg[:uri], {}, false) rescue false
+          if connect
+            system("cls")
+            puts "Connection estabilished!"
+            @has_match_started = true
+            return                  
+          else 
+            puts 'Waiting for the match to start!'
+            wait_for_connection()
+          end
     end
   
     def self.fetch_gamedata()
@@ -45,21 +49,16 @@ class API
 
 
     def self.get_champion_name_by_summoner summoner_name
-        fetch_players().each { |player| return player["championName"] if player["summonerName"].eql? summoner_name } # RETURNS THE NAME OF THE CHAMPION THROUGH THE NAME OF THE SUMMONER
+      fetch_players().each { |player| return player["championName"] if player["summonerName"].eql? summoner_name } # RETURNS THE NAME OF THE CHAMPION THROUGH THE NAME OF THE SUMMONER
     end
 
     def self.get_team_name_by_summoner summoner_name
-        fetch_players().each { |player|  
+      fetch_players().each { |player|  
           if player["summonerName"].eql?(summoner_name)
-            teamCode = player["team"]
-            if teamCode == "ORDER"
-              return "Blue"
-            elsif teamCode == "CHAOS"
-              return "Red"
-            end
+              teamCode = player["team"]
+              return "Blue" if teamCode == "ORDER"
+              return "Red" if teamCode == "CHAOS"
           end
         } 
     end
-    
-
 end
