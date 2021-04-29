@@ -1,3 +1,12 @@
+$cfg_notify = { 
+    webhook: '', # DISCORD WEBHOOK URL
+    notify_match_starts: true, # NOTIFY WHEN MATCH STARTS
+    notify_kill: true, # NOTIFY WHEN ONE CHAMPION ELIMINATES ANOTHER 
+    notify_turret_destroyed: true, # NOTIFY WHEN A TURRET IS DESTROYED
+    notify_monster_kill: true,   # NOTIFY WHEN A DRAGON OR BARON IS ELIMINATED
+}
+
+
 $cfg = { 
     uri: 'https://127.0.0.1:2999',
     endpoints: { 
