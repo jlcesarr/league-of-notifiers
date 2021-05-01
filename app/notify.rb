@@ -12,8 +12,8 @@ module Notify
         end
         
         def notify_champion_kill event
-            player_score = API.fetch_playerscore(event["KillerName"])
-            killer_champion_name = API.get_champion_name_by_summoner(event["KillerName"])
+            player_score = API.fetch_playerscore(event["KillerName"] || event["Recipient"] || event["Acer"])
+            killer_champion_name = API.get_champion_name_by_summoner(event["KillerName"] || event["Recipient"] || event["Acer"])
    
             if event["EventName"] == "FirstBlood"
                 send_message( 
@@ -24,7 +24,7 @@ module Notify
                         :killScore =>  player_score["kills"],
                         :deathScore =>  player_score["deaths"],
                         :assistScore =>  player_score["assists"],
-                        :wardsScore =>  player_score["wardScore"].round(),
+                        :wardsScore =>  player_score["wardScore"].round() || 0,
                         :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
                     )
                 )
@@ -32,13 +32,15 @@ module Notify
                 send_message( 
                     mount_kill_message(
                         :killerName => event["KillerName"], 
+                        :victimChampion => killer_champion_name, 
+                        :victimName => event["VictimName"], 
                         :killerChampion => killer_champion_name, 
                         :assistsCount =>  event["Assisters"].count, 
                         :farmScore =>  player_score["creepScore"],
                         :killScore =>  player_score["kills"],
                         :deathScore =>  player_score["deaths"],
                         :assistScore =>  player_score["assists"],
-                        :wardsScore =>  player_score["wardScore"].round(),
+                        :wardsScore =>  player_score["wardScore"].round() || 0,
                         :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
                     )
                 )
@@ -52,26 +54,24 @@ module Notify
                         :killScore =>  player_score["kills"],
                         :deathScore =>  player_score["deaths"],
                         :assistScore =>  player_score["assists"],
-                        :wardsScore =>  player_score["wardScore"].round(),
+                        :wardsScore =>  player_score["wardScore"].round() || 0,
                         :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
                     )
                 )
             elsif event["EventName"] == "Ace"
-                acer_champion_name = API.get_champion_name_by_summoner(event["Acer"])
-                acer_score = API.fetch_playerscore(event["Acer"])
                 acer_team = event["AcingTeam"] == "ORDER" ? "Blue" : "Red"
-
+                
                 send_message( 
                     mount_ace_message(
                         :killerName => event["Acer"], 
-                        :killerChampion => acer_champion_name, 
-                        :farmScore =>  acer_score["creepScore"],
-                        :killScore =>  acer_score["kills"],
-                        :deathScore =>  acer_score["deaths"],
-                        :assistScore =>  acer_score["assists"],
-                        :wardsScore =>  acer_score["wardScore"].round(),
+                        :killerChampion => killer_champion_name, 
+                        :farmScore =>  player_score["creepScore"],
+                        :killScore =>  player_score["kills"],
+                        :deathScore =>  player_score["deaths"],
+                        :assistScore =>  player_score["assists"],
+                        :wardsScore =>  player_score["wardScore"].round() || 0,
                         :acedTeam => acer_team,
-                        :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{acer_champion_name.gsub(" ", "") || acer_champion_name}.png"
+                        :championImage => "http://ddragon.leagueoflegends.com/cdn/11.8.1/img/champion/#{killer_champion_name.gsub(" ", "") || killer_champion_name}.png"
                     )
                 )
             end
@@ -107,7 +107,7 @@ module Notify
                 monsterImage = $cfg[:monster_images][:air] if event["DragonType"] == "Air"
                 monsterImage = $cfg[:monster_images][:water] if event["DragonType"] == "Water"
             
-                send_message( 
+                send_message(  
                     mount_monster_message(
                         :killerName => event["KillerName"], 
                         :monsterName => "#{event["DragonType"]} Drake",

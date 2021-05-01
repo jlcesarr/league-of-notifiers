@@ -10,15 +10,16 @@ class API
           return if !!@has_match_started
 
           connect = Utils.req("GET", $cfg[:uri], {}, false) rescue false
-          if connect
-            system("cls")
-            puts "Connection estabilished!"
-            @has_match_started = true
-            return                  
-          else 
+          
+          if !connect
             puts 'Waiting for the match to start!'
-            wait_for_connection()
+            wait_for_connection()            
           end
+
+          system("cls")
+          puts "Connection estabilished!"
+          @has_match_started = true
+          return  
     end
   
     def self.fetch_gamedata()

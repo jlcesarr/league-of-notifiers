@@ -54,7 +54,7 @@ class Watcher
   
   class WatchTurret < Watcher
       def update(time, data)       # callback for observer
-        if data["EventName"] == @event_type
+        if data["EventName"] == @event_type && !(data["KillerName"].include?("Minion"))
           puts "+++ #{time.to_s}: Turret Kill Event #{@event_type}"
             @notify.notify_turret_kill(data)
         end
