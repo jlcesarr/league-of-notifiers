@@ -34,8 +34,10 @@ class WatchMatch < Watcher
           puts "+++ #{time.to_s}: Kill Event"
           @notify.notify_champion_kill(data) if $cfg_notify[:notify_kill]
       when 'TurretKilled', 'FirstBrick'
-          puts "+++ #{time.to_s}: Turret Kill Event"
-          @notify.notify_turret_kill(data) if $cfg_notify[:notify_turret_destroyed]
+          if !(data["KillerName"].include?("Minion"))
+            puts "+++ #{time.to_s}: Turret Kill Event"
+            @notify.notify_turret_kill(data) if $cfg_notify[:notify_turret_destroyed]
+          end
       when 'DragonKill', 'BaronKill', 'HeraldKill' 
           puts "+++ #{time.to_s}: Monster Kill Event" 
           @notify.notify_monster_kill(data)if $cfg_notify[:notify_monster_kill]
