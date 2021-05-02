@@ -4,7 +4,7 @@ class Utils
  def self.req(httpmethod,url,headers = {},body)
     httpmethod.downcase!
     if body
-        return HTTParty.method(httpmethod).call(url,:headers => headers, :body => body).body
+        return HTTParty.method(httpmethod).call(url,:headers => headers, :body => body).body 
     end
     return HTTParty.method(httpmethod).call(url,:headers => headers).body
  end

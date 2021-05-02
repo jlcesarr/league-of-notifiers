@@ -1,7 +1,7 @@
 module Notify
     class Discord 
         def initialize
-            if $cfg_notify[:webhook].nil? || $cfg_notify[:webhook] == ""        
+            unless $cfg_notify[:webhook] =~ /discord.com\/api\/webhooks/
                 puts "Invalid Discord Webhook!"
                 exit
             end
@@ -94,7 +94,7 @@ module Notify
                 send_message( 
                     mount_monster_message(
                         :killerName => event["KillerName"], 
-                        :monsterName => "Arauto do Vale",
+                        :monsterName => "Herald",
                         :killerChampion => killer_champion_name, 
                         :assistsCount =>  event["Assisters"].count,
                         :monsterImage => $cfg[:monster_images][:herald]

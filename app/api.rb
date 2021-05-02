@@ -9,7 +9,7 @@ class API
     def self.wait_for_connection()          
           return if !!@has_match_started
 
-          connect = Utils.req("GET", $cfg[:uri], {}, false) rescue false
+          connect = Utils.req("GET", $cfg[:uri], {}, false) rescue  false
           
           if !connect
             puts 'Waiting for the match to start!'
@@ -23,7 +23,7 @@ class API
     end
   
     def self.fetch_gamedata()
-      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:allgamedata]}", {}, false)) # RETURNS THE OBJECT OF THE MATCH
+      JSON.parse(Utils.req("GET", "#{$cfg[:uri]}/#{$cfg[:endpoints][:allgamedata]}", {}, false))  # RETURNS THE OBJECT OF THE MATCH
     end
   
     def self.fetch_events()
