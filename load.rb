@@ -1,6 +1,7 @@
 [
     './lib/utils',
     './app/cfg',
+    './app/user_prompt',
     './app/api',
     './app/handler',
     './app/formats',
